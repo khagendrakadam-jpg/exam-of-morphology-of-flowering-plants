@@ -1,10 +1,231 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>NEET Exam Proctor</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEET Morphology Exam</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f4f4f9; }
+        #login-screen, #exam-screen, #result-screen { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .hidden { display: none !important; }
+        input[type="text"], input[type="email"] { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #0056b3; }
+        .option-btn { display: block; width: 100%; text-align: left; background: #eee; color: #333; margin: 5px 0; padding: 10px; border: 1px solid #ddd; }
+        .option-btn.selected { background: #007bff; color: white; }
+        #video-preview { position: fixed; bottom: 20px; right: 20px; width: 200px; height: 150px; border: 2px solid red; border-radius: 10px; z-index: 1000; object-fit: cover; background: #000; }
+        #warning-box { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: red; color: white; padding: 15px; border-radius: 5px; font-weight: bold; z-index: 2000; display: none; }
+        #timer { font-size: 24px; font-weight: bold; color: #d9534f; float: right; }
+        .question-text { font-size: 18px; margin: 20px 0; }
+    </style>
 </head>
 <body>
-    <h1>Hello! The exam app is working.</h1>
-    <p>We will add the exam code here soon.</p>
+
+    <!-- LOGIN SCREEN -->
+    <div id="login-screen">
+        <h1>NEET Morphology Exam</h1>
+        <p>Enter your details to begin. Camera access is required.</p>
+        <input type="text" id="student-name" placeholder="Full Name">
+        <input type="text" id="student-roll" placeholder="Roll Number">
+        <input type="email" id="student-email" placeholder="Email Address">
+        <button onclick="startExam()">Start Exam</button>
+    </div>
+
+    <!-- EXAM SCREEN -->
+    <div id="exam-screen" class="hidden">
+        <div id="timer">Time: 00:00</div>
+        <h2>Question <span id="q-num">1</span> of 200</h2>
+        <div class="question-text" id="q-text"></div>
+        <div id="options-container"></div>
+        <br>
+        <button onclick="skipQuestion()" style="background: #f0ad4e;">Skip</button>
+        <button onclick="nextQuestion()" style="background: #5bc0de;">Next</button>
+        <button onclick="submitExam()" style="background: #d9534f; float: right;">Submit Exam</button>
+    </div>
+
+    <!-- RESULT SCREEN -->
+    <div id="result-screen" class="hidden">
+        <h1>Exam Completed!</h1>
+        <p>Your responses have been submitted. You will receive an email with your detailed result shortly.</p>
+        <button onclick="window.location.reload()">Finish</button>
+    </div>
+
+    <video id="video-preview" autoplay muted></video>
+    <div id="warning-box">WARNING: Please look at the screen!</div>
+
+    <script>
+        // ==========================================
+        // CONFIGURATION
+        // ==========================================
+        const CLIENT_ID = '882267901678-4snpd33ks6kh2dif2vt2lf4vjea5059l.apps.googleusercontent.com';
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzMQ1liauBUV9dEPi-wk1EuEDkQve3cnLftumDEkOFB2DtGMn8bJQbjaC1tjlU26jog/exec';
+
+        let currentQuestion = 0;
+        let answers = new Array(200).fill(null);
+        let mediaRecorder;
+        let recordedChunks = [];
+        let stream;
+        let faceDisappearedTime = null;
+        let warningActive = false;
+        let timeElapsed = 0;
+
+        // 1. START EXAM
+        async function startExam() {
+            const name = document.getElementById('student-name').value;
+            const roll = document.getElementById('student-roll').value;
+            const email = document.getElementById('student-email').value;
+
+            if (!name || !roll || !email) { alert("Please fill all details."); return; }
+
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                document.getElementById('video-preview').srcObject = stream;
+                startRecording();
+                startTimer();
+                startFaceDetection();
+                
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('exam-screen').classList.remove('hidden');
+                loadQuestion();
+            } catch (err) {
+                alert("Camera access is required to take this exam. Please allow camera permissions and refresh.");
+            }
+        }
+
+        // 2. RECORDING LOGIC
+        function startRecording() {
+            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.ondataavailable = (event) => {
+                if (event.data.size > 0) recordedChunks.push(event.data);
+            };
+            mediaRecorder.start();
+        }
+
+        // 3. TIMER LOGIC
+        function startTimer() {
+            setInterval(() => {
+                timeElapsed++;
+                const mins = Math.floor(timeElapsed / 60).toString().padStart(2, '0');
+                const secs = (timeElapsed % 60).toString().padStart(2, '0');
+                document.getElementById('timer').innerText = `Time: ${mins}:${secs}`;
+            }, 1000);
+        }
+
+        // 4. FACE DETECTION (30s Rule)
+        function startFaceDetection() {
+            setInterval(async () => {
+                if ('FaceDetector' in window) {
+                    const faceDetector = new FaceDetector();
+                    const faces = await faceDetector.detect(document.getElementById('video-preview'));
+                    
+                    if (faces.length === 0) {
+                        if (!faceDisappearedTime) faceDisappearedTime = Date.now();
+                        
+                        const elapsed = Date.now() - faceDisappearedTime;
+                        if (elapsed > 10000 && !warningActive) {
+                            document.getElementById('warning-box').style.display = 'block';
+                            warningActive = true;
+                        }
+                        if (elapsed > 30000) {
+                            alert("Exam Cancelled: Face not detected for 30 seconds.");
+                            cancelExam();
+                        }
+                    } else {
+                        faceDisappearedTime = null;
+                        warningActive = false;
+                        document.getElementById('warning-box').style.display = 'none';
+                    }
+                }
+            }, 1000);
+        }
+
+        // 5. TAB SWITCH DETECTION
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                alert("Exam Cancelled: Tab switching detected.");
+                cancelExam();
+            }
+        });
+
+        // Helper to cancel exam
+        function cancelExam() {
+            if(mediaRecorder) mediaRecorder.stop();
+            if(stream) stream.getTracks().forEach(track => track.stop());
+            document.getElementById('exam-screen').innerHTML = "<h2>Exam Cancelled due to proctoring violation.</h2>";
+        }
+
+        // 6. QUESTION LOGIC
+        function loadQuestion() {
+            // PASTE YOUR 200 QUESTIONS HERE IN THIS FORMAT
+            const questions = [
+                { q: "In mustard plant, the root system is formed directly by the elongation of the radicle. Such a root system is known as:", options: ["Fibrous root system", "Tap root system", "Adventitious root system", "Stilt root system"] },
+                { q: "Roots that develop from parts of the plant other than the radicle are called:", options: ["Tap roots", "Adventitious roots", "Primary roots", "Fibrous roots"] },
+                // ... Add remaining 198 questions here
+            ];
+
+            if (currentQuestion >= questions.length) { submitExam(); return; }
+
+            const q = questions[currentQuestion];
+            document.getElementById('q-num').innerText = currentQuestion + 1;
+            document.getElementById('q-text').innerText = q.q;
+            
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                if (answers[currentQuestion] === index + 1) btn.classList.add('selected');
+                btn.innerText = `${index + 1}. ${opt}`;
+                btn.onclick = () => selectOption(index + 1);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectOption(optionIndex) {
+            answers[currentQuestion] = optionIndex;
+            loadQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < 199) { currentQuestion++; loadQuestion(); }
+        }
+
+        function skipQuestion() {
+            if (currentQuestion < 199) { currentQuestion++; loadQuestion(); }
+        }
+
+        // 7. SUBMIT EXAM
+        async function submitExam() {
+            if(mediaRecorder) mediaRecorder.stop();
+            mediaRecorder.onstop = async () => {
+                const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                
+                const reader = new FileReader();
+                reader.readAsDataURL(blob);
+                reader.onloadend = async () => {
+                    const base64data = reader.result;
+                    
+                    const payload = {
+                        studentName: document.getElementById('student-name').value,
+                        rollNumber: document.getElementById('student-roll').value,
+                        studentEmail: document.getElementById('student-email').value,
+                        answers: answers,
+                        videoData: base64data
+                    };
+
+                    await fetch(APPS_SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify(payload)
+                    });
+
+                    if(stream) stream.getTracks().forEach(track => track.stop());
+                    document.getElementById('exam-screen').classList.add('hidden');
+                    document.getElementById('result-screen').classList.remove('hidden');
+                };
+            };
+        }
+    </script>
 </body>
 </html>
