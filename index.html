@@ -3,108 +3,1260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEET Morphology Exam</title>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <title>Samutkarsh Classes - NEET Morphology Mock Test</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f4f4f9; }
-        #login-screen, #exam-screen, #result-screen { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        .hidden { display: none !important; }
-        input[type="text"], input[type="email"] { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-        button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
-        button:hover { background: #0056b3; }
-        .option-btn { display: block; width: 100%; text-align: left; background: #eee; color: #333; margin: 5px 0; padding: 10px; border: 1px solid #ddd; }
-        .option-btn.selected { background: #007bff; color: white; }
-        #video-preview { position: fixed; bottom: 20px; right: 20px; width: 200px; height: 150px; border: 2px solid red; border-radius: 10px; z-index: 1000; object-fit: cover; background: #000; }
-        #warning-box { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: red; color: white; padding: 15px; border-radius: 5px; font-weight: bold; z-index: 2000; display: none; }
-        #timer { font-size: 24px; font-weight: bold; color: #d9534f; float: right; }
-        .question-text { font-size: 18px; margin: 20px 0; }
+        :root {
+            --primary-green: #2e7d32;
+            --light-green: #e8f5e9;
+            --dark-green: #1b5e20;
+            --accent-green: #4caf50;
+            --bg-color: #f4f9f4;
+            --text-dark: #2c3e50;
+            --text-light: #555555;
+            --danger: #d32f2f;
+            --danger-dark: #b71c1c;
+            --warning: #f57c00;
+            --purple: #7b1fa2;
+            --purple-dark: #5e1277;
+            --border-color: #e0e0e0;
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --header-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Subtle Botany Background Decorations */
+        .bg-decor {
+            position: fixed;
+            opacity: 0.04;
+            z-index: 0;
+            pointer-events: none;
+            font-size: 140px;
+            user-select: none;
+        }
+        .leaf-1 { top: 8%; left: 4%; transform: rotate(-25deg); }
+        .leaf-2 { bottom: 8%; right: 4%; transform: rotate(35deg); }
+        .flower-1 { top: 45%; left: 82%; font-size: 110px; transform: rotate(15deg); }
+        .flower-2 { bottom: 15%; left: 8%; font-size: 90px; transform: rotate(-10deg); }
+
+        /* ---------------- LOGIN SCREEN ---------------- */
+        #login-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #f4f9f4 0%, #e8f5e9 100%);
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-card {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            max-width: 440px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid rgba(46, 125, 50, 0.15);
+        }
+
+        .login-card h1 {
+            color: var(--dark-green);
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .login-card h2 {
+            color: var(--primary-green);
+            font-size: 17px;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .login-card .tagline {
+            color: var(--text-light);
+            font-size: 13.5px;
+            margin-bottom: 25px;
+            background: var(--light-green);
+            padding: 6px 12px;
+            border-radius: 20px;
+            display: inline-block;
+            font-weight: 500;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 12.5px;
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+            user-select: text;
+            -webkit-user-select: text;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.12);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary-green);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .btn-primary:hover {
+            background: var(--dark-green);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.99);
+        }
+
+        /* ---------------- INSTRUCTION MODAL ---------------- */
+        #instruction-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(3px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            padding: 35px;
+            border-radius: 16px;
+            max-width: 520px;
+            width: 90%;
+            box-shadow: var(--card-shadow);
+        }
+
+        .modal-content h2 {
+            color: var(--dark-green);
+            font-size: 20px;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-content ul {
+            margin-left: 20px;
+            margin-bottom: 25px;
+            color: var(--text-dark);
+            font-size: 13.5px;
+            line-height: 1.7;
+        }
+
+        .modal-content li {
+            margin-bottom: 8px;
+        }
+
+        .modal-content li strong {
+            color: var(--danger);
+        }
+
+        /* ---------------- EXAM SCREEN ---------------- */
+        #exam-screen {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        .exam-header {
+            background: #ffffff;
+            padding: 14px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--header-shadow);
+            z-index: 10;
+        }
+
+        .exam-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-green);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #timer {
+            background: var(--danger);
+            color: #ffffff;
+            padding: 7px 18px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 6px rgba(211, 47, 47, 0.3);
+        }
+
+        .exam-main {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* Left Column: Question Area */
+        .question-area {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            background: #ffffff;
+            margin: 18px;
+            border-radius: 14px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .question-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .q-badge {
+            background: var(--light-green);
+            color: var(--dark-green);
+            font-size: 13px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 12px;
+        }
+
+        .marks-badge {
+            font-size: 12.5px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .question-text {
+            font-size: 16.5px;
+            line-height: 1.65;
+            margin-bottom: 24px;
+            font-weight: 500;
+            color: #1f2d3d;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .option-btn {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            text-align: left;
+            padding: 14px 18px;
+            background: #fbfdfb;
+            border: 1.5px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 14.5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        .option-btn:hover {
+            background: var(--light-green);
+            border-color: var(--accent-green);
+        }
+
+        .option-btn.selected {
+            background: var(--light-green);
+            border-color: var(--primary-green);
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgba(46, 125, 50, 0.15);
+        }
+
+        .opt-letter {
+            font-weight: 600;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #eef2ee;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12.5px;
+            flex-shrink: 0;
+            color: var(--dark-green);
+        }
+
+        .option-btn.selected .opt-letter {
+            background: var(--primary-green);
+            color: #ffffff;
+        }
+
+        .opt-text {
+            flex: 1;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #f0f0f0;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .action-buttons button {
+            padding: 11px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13.5px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-clear {
+            background: #f1f3f4;
+            color: var(--text-dark);
+        }
+        .btn-clear:hover {
+            background: #e0e3e5;
+        }
+
+        .btn-mark {
+            background: var(--purple);
+            color: #ffffff;
+        }
+        .btn-mark:hover {
+            background: var(--purple-dark);
+        }
+
+        .btn-save-next {
+            background: var(--primary-green);
+            color: #ffffff;
+        }
+        .btn-save-next:hover {
+            background: var(--dark-green);
+        }
+
+        .btn-submit {
+            background: var(--danger);
+            color: #ffffff;
+            margin-left: auto;
+            font-weight: 600;
+        }
+        .btn-submit:hover {
+            background: var(--danger-dark);
+        }
+
+        /* Right Column: Question Palette Sidebar */
+        .sidebar {
+            width: 330px;
+            background: #ffffff;
+            border-left: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            z-index: 10;
+        }
+
+        .sidebar h3 {
+            font-size: 15.5px;
+            margin-bottom: 14px;
+            color: var(--dark-green);
+            font-weight: 600;
+        }
+
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            overflow-y: auto;
+            flex: 1;
+            padding-right: 6px;
+        }
+
+        .palette-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            border: 1.5px solid #d5dbd5;
+            background: #ffffff;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.15s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            color: var(--text-dark);
+        }
+
+        .palette-btn:hover {
+            border-color: var(--primary-green);
+        }
+
+        .palette-btn.current {
+            border: 2.5px solid #111111 !important;
+            font-weight: 700;
+        }
+
+        .palette-btn.answered {
+            background: var(--accent-green);
+            color: #ffffff;
+            border-color: var(--accent-green);
+        }
+
+        .palette-btn.marked {
+            background: var(--purple);
+            color: #ffffff;
+            border-color: var(--purple);
+            border-radius: 50%;
+        }
+
+        .palette-btn.answered-marked {
+            background: var(--purple);
+            color: #ffffff;
+            border-color: var(--purple);
+            border-radius: 50%;
+        }
+
+        .palette-btn.answered-marked::after {
+            content: '';
+            position: absolute;
+            bottom: 3px;
+            right: 3px;
+            width: 9px;
+            height: 9px;
+            background: #4caf50;
+            border: 1.5px solid #ffffff;
+            border-radius: 50%;
+        }
+
+        /* Legend */
+        .legend {
+            margin-top: 15px;
+            padding-top: 14px;
+            border-top: 1px solid var(--border-color);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px 12px;
+            font-size: 11.5px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .legend-box {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            border: 1px solid #c2ccc2;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .legend-marked-dot {
+            position: absolute;
+            bottom: 0px;
+            right: 0px;
+            width: 6px;
+            height: 6px;
+            background: #4caf50;
+            border: 1px solid #fff;
+            border-radius: 50%;
+        }
+
+        /* ---------------- PROCTORING & WEBCAM PREVIEW ---------------- */
+        #video-preview {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 180px;
+            height: 135px;
+            border: 3px solid var(--accent-green);
+            border-radius: 12px;
+            z-index: 2500;
+            object-fit: cover;
+            background: #000000;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+            transform: scaleX(-1); /* Flipped horizontally */
+            -webkit-transform: scaleX(-1);
+        }
+
+        #warning-box {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--danger);
+            color: #ffffff;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14.5px;
+            z-index: 3500;
+            display: none;
+            box-shadow: 0 5px 20px rgba(211, 47, 47, 0.45);
+            animation: pulse 1s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { opacity: 0.9; transform: translateX(-50%) scale(0.98); }
+            to { opacity: 1; transform: translateX(-50%) scale(1); }
+        }
+
+        /* ---------------- CANCELLED SCREEN ---------------- */
+        #cancelled-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #ffffff;
+            text-align: center;
+            padding: 30px;
+            z-index: 4000;
+        }
+
+        .cancelled-card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            max-width: 500px;
+            border: 1.5px solid var(--danger);
+        }
+
+        .cancelled-card h1 {
+            color: var(--danger);
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .cancelled-card p {
+            color: var(--text-dark);
+            font-size: 14.5px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        /* ---------------- RESULT SCREEN ---------------- */
+        .result-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #ffffff;
+            text-align: center;
+            overflow-y: auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .result-card {
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            max-width: 840px;
+            width: 90%;
+            margin: 20px auto;
+            border: 1px solid var(--border-color);
+            background: #ffffff;
+        }
+
+        .result-card h1 {
+            color: var(--primary-green);
+            font-size: 24px;
+            margin-bottom: 6px;
+        }
+
+        .result-card .sub-p {
+            color: var(--text-light);
+            font-size: 13.5px;
+            margin-bottom: 22px;
+        }
+
+        .result-summary {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+            background: var(--light-green);
+            padding: 16px;
+            border-radius: 12px;
+        }
+
+        .summary-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 4px;
+            background: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #dbead9;
+        }
+
+        .summary-label {
+            font-size: 11.5px;
+            color: var(--text-light);
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .summary-val {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .result-table-container {
+            max-height: 380px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            text-align: left;
+        }
+
+        .result-table th, .result-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .result-table th {
+            background: var(--primary-green);
+            color: #ffffff;
+            position: sticky;
+            top: 0;
+            font-weight: 600;
+        }
+
+        .result-table tr:hover {
+            background: #f9fbf9;
+        }
+
+        .status-correct {
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        .status-incorrect {
+            color: #d32f2f;
+            font-weight: 600;
+        }
+
+        .status-unattempted {
+            color: #f57c00;
+            font-weight: 600;
+        }
+
+        /* Scrollbar styles */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f0f0f0;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c2cfc2;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a3b8a3;
+        }
     </style>
 </head>
 <body>
 
-    <!-- LOGIN SCREEN -->
+    <!-- Background Botany Decorations -->
+    <div class="bg-decor leaf-1">🌿</div>
+    <div class="bg-decor leaf-2">🍃</div>
+    <div class="bg-decor flower-1">🌸</div>
+    <div class="bg-decor flower-2">🌸</div>
+
+    <!-- Hidden Canvas for Fallback Face / Luminance Detection -->
+    <canvas id="fallback-canvas" width="80" height="60" style="display:none;"></canvas>
+
+    <!-- 1. LOGIN SCREEN -->
     <div id="login-screen">
-        <h1>NEET Morphology Exam</h1>
-        <p>Enter your details to begin. Camera access is required.</p>
-        <input type="text" id="student-name" placeholder="Full Name">
-        <input type="text" id="student-roll" placeholder="Roll Number">
-        <input type="email" id="student-email" placeholder="Email Address">
-        <button onclick="startExam()">Start Exam</button>
+        <div class="login-card">
+            <h1>🌿 Samutkarsh Classes 🌿</h1>
+            <h2>Girivihar Branch</h2>
+            <div class="tagline">NEET Morphology Mock Test (200 Questions)</div>
+            
+            <div class="input-group">
+                <label for="student-name">Full Name</label>
+                <input type="text" id="student-name" placeholder="Enter student's full name" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="student-contact">Contact Number</label>
+                <input type="text" id="student-contact" placeholder="10-digit mobile number" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="student-email">Email Address</label>
+                <input type="email" id="student-email" placeholder="example@email.com" required>
+            </div>
+            
+            <button class="btn-primary" onclick="showInstructions()">Start Exam</button>
+        </div>
     </div>
 
-    <!-- EXAM SCREEN -->
+    <!-- 2. INSTRUCTION MODAL -->
+    <div id="instruction-modal" class="hidden">
+        <div class="modal-content">
+            <h2>⚠️ Important Instructions</h2>
+            <ul>
+                <li><strong>Camera is mandatory.</strong> Ensure your face is clearly visible and well-lit.</li>
+                <li>If your face disappears from the screen for more than <strong>30 seconds</strong>, the exam will be cancelled.</li>
+                <li><strong>Do NOT switch tabs or windows.</strong> Switching tabs or using copy/paste will result in immediate exam cancellation.</li>
+                <li>Your entire video will be recorded during the exam.</li>
+                <li>You have <strong>200 questions</strong>. You can use the Question Palette to jump to any question.</li>
+                <li><strong>Marking Scheme:</strong> +4 for correct, -1 for incorrect, 0 for unattempted.</li>
+            </ul>
+            <button class="btn-primary" onclick="startExam()">I Understand, Start Exam</button>
+        </div>
+    </div>
+
+    <!-- 3. EXAM SCREEN -->
     <div id="exam-screen" class="hidden">
-        <div id="timer">Time: 00:00</div>
-        <h2>Question <span id="q-num">1</span> of 200</h2>
-        <div class="question-text" id="q-text"></div>
-        <div id="options-container"></div>
-        <br>
-        <button onclick="skipQuestion()" style="background: #f0ad4e;">Skip</button>
-        <button onclick="nextQuestion()" style="background: #5bc0de;">Next</button>
-        <button onclick="submitExam()" style="background: #d9534f; float: right;">Submit Exam</button>
+        <div class="exam-header">
+            <h2>NEET Morphology Mock Test</h2>
+            <div id="timer">Time: 00:00</div>
+        </div>
+        
+        <div class="exam-main">
+            <!-- Left: Question Area -->
+            <div class="question-area">
+                <div class="question-header-row">
+                    <span class="q-badge" id="q-number-badge">Question 1 / 200</span>
+                    <span class="marks-badge">Marking: +4 / -1</span>
+                </div>
+                
+                <div class="question-text" id="q-text"></div>
+                <div class="options-list" id="options-container"></div>
+                
+                <div class="action-buttons">
+                    <button class="btn-clear" onclick="clearResponse()">Clear</button>
+                    <button class="btn-mark" onclick="markForReviewAndNext()">Mark for Review & Next</button>
+                    <button class="btn-save-next" onclick="saveAndNext()">Save & Next</button>
+                    <button class="btn-submit" onclick="confirmSubmitExam()">Submit Exam</button>
+                </div>
+            </div>
+            
+            <!-- Right: Question Palette Sidebar -->
+            <div class="sidebar">
+                <h3>Question Palette</h3>
+                <div class="palette-grid" id="palette-grid"></div>
+                
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-box" style="background: var(--accent-green); border: none;"></div>
+                        <span>Answered</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background: #ffffff;"></div>
+                        <span>Not Answered</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background: var(--purple); border-radius: 50%; border: none;"></div>
+                        <span>Marked</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background: var(--purple); border-radius: 50%; border: none;">
+                            <div class="legend-marked-dot"></div>
+                        </div>
+                        <span>Ans & Marked</span>
+                    </div>
+                    <div class="legend-item" style="grid-column: span 2;">
+                        <div class="legend-box" style="border: 2px solid #111;"></div>
+                        <span>Current Question</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- RESULT SCREEN -->
-    <div id="result-screen" class="hidden">
-        <h1>Exam Completed!</h1>
-        <p>Your responses have been submitted. You will receive an email with your detailed result shortly.</p>
-        <button onclick="window.location.reload()">Finish</button>
+    <!-- 4. CANCELLED SCREEN -->
+    <div id="cancelled-screen" class="hidden">
+        <div class="cancelled-card">
+            <h1>⚠️ Exam Cancelled</h1>
+            <p id="cancelled-reason">Your exam was cancelled due to a proctoring violation.</p>
+            <button class="btn-primary" style="background: var(--danger);" onclick="window.location.reload()">Return to Login</button>
+        </div>
     </div>
 
-    <video id="video-preview" autoplay muted></video>
+    <!-- 5. RESULT SCREEN -->
+    <div id="result-screen" class="hidden result-screen">
+        <div class="result-card">
+            <h1>🌿 Exam Completed! 🌿</h1>
+            <p class="sub-p">Your detailed result has been sent to your email.</p>
+            
+            <div class="result-summary" id="result-summary"></div>
+            
+            <h3 style="text-align: left; color: var(--dark-green); font-size: 15px; margin-top: 15px;">Answer Key & Analysis</h3>
+            <div class="result-table-container">
+                <table class="result-table" id="result-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 12%;">Q.No</th>
+                            <th style="width: 28%;">Your Answer</th>
+                            <th style="width: 28%;">Correct Answer</th>
+                            <th style="width: 32%;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="result-body"></tbody>
+                </table>
+            </div>
+            
+            <br>
+            <button class="btn-primary" style="max-width: 220px; margin: 0 auto; display: block;" onclick="window.location.reload()">Finish & Close</button>
+        </div>
+    </div>
+
+    <!-- Camera Preview & Warnings -->
+    <video id="video-preview" autoplay playsinline muted></video>
     <div id="warning-box">WARNING: Please look at the screen!</div>
 
     <script>
         // ==========================================
-        // CONFIGURATION
+        // 1. CONFIGURATION CONSTANTS
         // ==========================================
         const CLIENT_ID = '882267901678-4snpd33ks6kh2dif2vt2lf4vjea5059l.apps.googleusercontent.com';
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzMQ1liauBUV9dEPi-wk1EuEDkQve3cnLftumDEkOFB2DtGMn8bJQbjaC1tjlU26jog/exec';
+        const DRIVE_FOLDER_ID = '1ngFjhaa0uO3TaxQ-8kXumzePMCT-laHQ';
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxptHyGlq7vsc3kPD4BMREfo5jzLBbLH6dKlf8hKasiKz0n2TdlTpRklapMuZgLte-UDQ/exec';
 
+        // ==========================================
+        // 2. STATE VARIABLES
+        // ==========================================
         let currentQuestion = 0;
         let answers = new Array(200).fill(null);
-        let mediaRecorder;
-        let recordedChunks = [];
-        let stream;
-        let faceDisappearedTime = null;
-        let warningActive = false;
+        let markedForReview = new Array(200).fill(false);
+        
+        let examActive = false;
+        let examSubmitted = false;
         let timeElapsed = 0;
+        let timerInterval = null;
+        
+        let mediaStream = null;
+        let mediaRecorder = null;
+        let recordedChunks = [];
+        
+        let accessToken = null;
+        let tokenClient = null;
+        
+        let faceDisappearedStartTime = null;
+        let warningActive = false;
+        let faceCheckInterval = null;
 
-        // 1. START EXAM
-        async function startExam() {
-            const name = document.getElementById('student-name').value;
-            const roll = document.getElementById('student-roll').value;
-            const email = document.getElementById('student-email').value;
+        // ==========================================
+        // 3. THE 200 QUESTIONS (EXTRACTED FROM PDF)
+        // (Note: Frontend contains NO answer key)
+        // ==========================================
+        const questions = [
+            { q: "In mustard plant, the root system is formed directly by the elongation of the radicle. Such a root system is known as:", options: ["Fibrous root system", "Tap root system", "Adventitious root system", "Stilt root system"] },
+            { q: "Roots that develop from parts of the plant other than the radicle are called:", options: ["Tap roots", "Adventitious roots", "Primary roots", "Fibrous roots"] },
+            { q: "In wheat and other monocotyledonous plants, the primary root is short-lived and replaced by a large number of roots originating from:", options: ["The base of the stem", "The nodes of the leaves", "The hypocotyl only", "The secondary lateral branches"] },
+            { q: "Which of the following plants exhibits an adventitious root system arising from horizontal branches for mechanical support?", options: ["Mustard", "Banyan tree", "Wheat", "Radish"] },
+            { q: "Sweet potato is a modified:", options: ["Stem for food storage", "Adventitious root for food storage", "Tap root for food storage", "Rhizome for vegetative propagation"] },
+            { q: "Root hairs develop from the region of:", options: ["Elongation", "Root cap", "Meristematic activity", "Maturation"] },
+            { q: "Pneumatophores occur in:", options: ["Halophytes", "Free-floating hydrophytes", "Carnivorous plants", "Submerged hydrophytes"] },
+            { q: "Which one of the following is a modification of tap root for food storage?", options: ["Sweet potato", "Carrot and Turnip", "Potato", "Colocasia"] },
+            { q: "In Rhizophora, roots come out of the ground vertically upwards for obtaining oxygen. These specialized roots are known as:", options: ["Prop roots", "Stilt roots", "Pneumatophores", "Velamen roots"] },
+            { q: "Stilt roots are reported to arise from the lower nodes of the stem in:", options: ["Banyan and Peepal", "Maize and Sugarcane", "Mango and Guava", "Radish and Carrot"] },
+            { q: "Root cap is absent or replaced by root pocket in:", options: ["Pistia and Eichhornia", "Pandanus", "Ficus", "Rhizophora"] },
+            { q: "The sub-terminal position of the root apical meristem (RAM) is due to the presence of:", options: ["Root hairs", "Quiescent centre", "Root cap", "Epidermal cutin"] },
+            { q: "Which region of the growing root tip is primarily responsible for the growth of the root in length?", options: ["Region of root cap", "Region of meristematic activity", "Region of elongation", "Region of maturation"] },
+            { q: "Identify the correct order of zones in a growing root tip from distal apex to proximal base:", options: ["Root cap -> Meristematic zone -> Elongation zone -> Maturation zone", "Maturation zone -> Elongation zone -> Meristematic zone -> Root cap", "Meristematic zone -> Root cap -> Elongation zone -> Maturation zone", "Root cap -> Elongation zone -> Meristematic zone -> Maturation zone"] },
+            { q: "Cells in the region of meristematic activity of root tip are characterized by:", options: ["Large vacuoles and thick cell walls", "Dense cytoplasm, thin cellulose walls and large nuclei", "Suberized cell walls and lack of nuclei", "Extensive intercellular spaces"] },
+            { q: "Lateral secondary and tertiary roots originate endogenously from which internal tissue layer of the primary root?", options: ["Epidermis", "Endodermis", "Pericycle", "Cortex"] },
+            { q: "Which of the following is NOT a function of the root system in flowering plants?", options: ["Absorption of water and mineral salts", "Providing adequate anchorage to plant parts", "Photosynthesis in mature wood", "Synthesis of plant growth regulators"] },
+            { q: "Multiple root caps are found covering the apex of stilt roots in:", options: ["Pandanus (Screw pine)", "Ficus benghalensis", "Pistia", "Trapa"] },
+            { q: "Fusiform root shape is characteristically seen in:", options: ["Carrot (Daucus carota)", "Turnip (Brassica rapa)", "Radish (Raphanus sativus)", "Beetroot (Beta vulgaris)"] },
+            { q: "Napiform storage root is found in:", options: ["Raphanus", "Beta vulgaris and Brassica rapa", "Daucus carota", "Ipomoea batatas"] },
+            { q: "Pneumatophores show which of the following tropic responses?", options: ["Positively geotropic and positively phototropic", "Negatively geotropic and positively aerotropic", "Positively hydrotropic and positively geotropic", "Negatively phototropic and positively geotropic"] },
+            { q: "Prop roots of Banyan tree (Ficus benghalensis) are:", options: ["Underground tap roots", "Adventitious roots providing mechanical support", "Climbing roots for attachment", "Foliar roots for budding"] },
+            { q: "Match List-I with List-II: (A) Tap root storage, (B) Adventitious root storage, (C) Mechanical support (Pillar), (D) Respiration in saline swamps. [List-II: I. Banyan prop root, II. Rhizophora, III. Sweet potato, IV. Carrot]. Choose the correct answer:", options: ["(A)-(IV), (B)-(III), (C)-(I), (D)-(II)", "(A)-(III), (B)-(IV), (C)-(I), (D)-(II)", "(A)-(II), (B)-(I), (C)-(IV), (D)-(III)", "(A)-(IV), (B)-(I), (C)-(III), (D)-(II)"] },
+            { q: "Fasciculated tuberous roots which occur in clusters at the base of the stem are found in:", options: ["Asparagus and Dahlia", "Carrot and Turnip", "Sweet potato and Potato", "Ginger and Turmeric"] },
+            { q: "Velamen is a specialized hygroscopic tissue found in the aerial roots of:", options: ["Vanda (epiphytic orchid)", "Cuscuta (parasitic dodder)", "Rhizophora", "Hydrilla"] },
+            { q: "Haustoria or parasitic suckers are developed by:", options: ["Vanda", "Cuscuta", "Opuntia", "Rhizophora"] },
+            { q: "In aquatic plants like Pistia, balancing roots are characterized by the presence of:", options: ["Root pockets instead of root caps", "Prominent root hairs", "Stony root caps", "Dense mycorrhizal mantle"] },
+            { q: "The primary root along with its lateral branches constitutes the:", options: ["Seminal root system", "Tap root system", "Fibrous root system", "Adventitious root system"] },
+            { q: "The cells of the root hair zone are characterized by:", options: ["Thick suberin bands in epidermis", "Unicellular tubular prolongations of epidermal cells", "Multicellular glandular hairs", "Absence of vacuole"] },
+            { q: "Select the INCORRECT statement regarding roots:", options: ["Tap root system is seen in dicotyledons like mustard", "Fibrous root system originates from the base of stem in wheat", "Monstera and banyan bear adventitious roots", "Pneumatophores are positively geotropic roots found in mesophytes"] },
+            { q: "Nodulose roots having swollen tips are characteristically seen in:", options: ["Curcuma amada (Mango-ginger)", "Ipomoea batatas", "Brassica rapa", "Zea mays"] },
+            { q: "Photosynthetic or assimilatory green adventitious roots are found in:", options: ["Tinospora and Trapa", "Vanda and Cuscuta", "Rhizophora and Sonneratia", "Dahlia and Asparagus"] },
+            { q: "Which part of the embryonic axis terminates into the root system during germination?", options: ["Plumule", "Radicle", "Cotyledonary sheath", "Scutellum"] },
+            { q: "Lenticels or pneumathodes on pneumatophores function primarily in:", options: ["Water guttation", "Gaseous exchange for respiration", "Absorption of mineral ions", "Vegetative propagation"] },
+            { q: "Roots of which of the following plants are associated with nitrogen-fixing Rhizobium bacteria in nodules?", options: ["Gram, Pea and Bean (Fabaceae)", "Mustard (Brassicaceae)", "Solanum (Solanaceae)", "Allium (Liliaceae)"] },
+            { q: "Stems modified into flat green organs performing the functions of leaves are known as:", options: ["Phylloclades", "Cladodes", "Phyllodes", "Scales"] },
+            { q: "An example of an edible underground stem is:", options: ["Carrot", "Groundnut", "Sweet potato", "Potato"] },
+            { q: "Which of the following is not a stem modification?", options: ["Tendrils of cucumber", "Flattened structures of Opuntia", "Pitcher of Nepenthes", "Thorns of Citrus"] },
+            { q: "Offsets are produced by:", options: ["Meiotic divisions", "Mitotic divisions", "Parthenocarpy", "Parthenogenesis"] },
+            { q: "Axillary buds of stems get modified into woody, straight and pointed thorns in:", options: ["Opuntia and Euphorbia", "Citrus and Bougainvillea", "Cucumber and Pumpkin", "Chrysanthemum and Pineapple"] },
+            { q: "In Opuntia, the stem is modified into a photosynthetic structure termed as:", options: ["Cladode", "Phyllode", "Phylloclade", "Stolon"] },
+            { q: "Sweet potato is homologous to:", options: ["Potato", "Colocasia", "Ginger", "Turnip"] },
+            { q: "In ginger, vegetative propagation occurs through:", options: ["Rhizome", "Offsets", "Bulbils", "Runners"] },
+            { q: "Stem tendrils are slender, spirally coiled structures that develop from axillary buds in:", options: ["Gourds (Cucumber, Pumpkin, Watermelon) and Grapevines", "Pea and Sweet pea", "Opuntia and Euphorbia", "Citrus and Bougainvillea"] },
+            { q: "In Euphorbia, the modified photosynthetic stem is:", options: ["Fleshy cylindrical", "Flattened green", "Underground corm", "Slender spirally coiled tendril"] },
+            { q: "Vegetative propagation in water hyacinth (Eichhornia) and Pistia occurs by:", options: ["Sucker", "Stolon", "Offset", "Runner"] },
+            { q: "Which of the following plants has an underground stem modified for perennation and food storage in the form of a corm?", options: ["Colocasia and Zaminkand (Amorphophallus)", "Ginger and Turmeric", "Potato and Onion", "Grass and Mint"] },
+            { q: "The eyes of potato tubers represent:", options: ["Root scars", "Axillary buds at nodes with reduced scale leaves", "Flower buds", "Lenticels"] },
+            { q: "A lateral branch with short internodes and each node bearing a rosette of leaves and a tuft of roots is termed:", options: ["Runner", "Sucker", "Stolon", "Offset"] },
+            { q: "In mint and jasmine, a slender lateral branch arises from the base of the main axis and after growing aerially for some time arches downwards to touch the ground. Such a modification is a:", options: ["Runner", "Stolon", "Sucker", "Offset"] },
+            { q: "In banana, pineapple and Chrysanthemum, the lateral branches originate from the basal underground portion of the stem, grow horizontally beneath soil and come out obliquely to form leafy shoots. These are called:", options: ["Runners", "Stolons", "Suckers", "Offsets"] },
+            { q: "Bulbil is a modified vegetative or floral bud meant for vegetative reproduction in:", options: ["Agave", "Allium cepa", "Zingiber", "Solanum tuberosum"] },
+            { q: "Plants which produce vegetative runners that spread to new niches and form new plantlets when older parts die include:", options: ["Grass and Strawberry", "Pistia and Eichhornia", "Mint and Jasmine", "Banana and Pineapple"] },
+            { q: "Thorns of Bougainvillea and tendrils of Cucurbita are examples of:", options: ["Analogous organs", "Homologous organs", "Vestigial organs", "Atavistic structures"] },
+            { q: "Which of the following features strictly distinguishes a stem from a root?", options: ["Presence of nodes, internodes and multicellular hair", "Absence of chlorophyll", "Positive geotropism", "Endogenous origin of lateral branches"] },
+            { q: "In garlic and onion, the stem is reduced to a flattened disc surrounded by fleshy leaves. This modification is called a:", options: ["Rhizome", "Corm", "Bulb", "Tuber"] },
+            { q: "Ginger is an underground stem and not a root because it:", options: ["Lacks chlorophyll", "Has nodes and internodes bearing scale leaves", "Stores food reserves", "Grows horizontally in soil"] },
+            { q: "Cladode of one internode length is found in:", options: ["Asparagus and Ruscus", "Opuntia and Euphorbia", "Casuarina", "Acacia"] },
+            { q: "Assertion (A): Thorns in Citrus protect the plant from browsing animals. Reason (R): Thorns are hard, woody and pointed modifications of axillary buds.", options: ["Both (A) and (R) are true and (R) is the correct explanation of (A)", "Both (A) and (R) are true but (R) is not the correct explanation of (A)", "(A) is true but (R) is false", "Both (A) and (R) are false"] },
+            { q: "The terminal bud of the stem is responsible for:", options: ["Apical growth and elongation of main axis", "Origin of lateral roots", "Secondary growth of phellem", "Formation of pericycle"] },
+            { q: "Phyllode is present in:", options: ["Asparagus", "Euphorbia", "Australian Acacia", "Opuntia"] },
+            { q: "Whorled phyllotaxy with more than two leaves per node is found in:", options: ["Calotropis", "Mustard", "China rose", "Alstonia"] },
+            { q: "Venation is a term used to describe the pattern of arrangement of:", options: ["Floral organs", "Veins and veinlets in the lamina", "Leaves on the stem", "Sepals and petals in bud"] },
+            { q: "Leaves become modified into spines for defense and reducing transpiration in:", options: ["Opuntia and Cacti", "Pea", "Onion", "Silk cotton"] },
+            { q: "In which of the following plants are leaves modified into tendrils for climbing?", options: ["Passiflora", "Wild Pea (Pisum)", "Cucumber", "Grapevine"] },
+            { q: "A swollen leaf base found in some leguminous plants is called:", options: ["Pulvinus", "Sheathing leaf base", "Stipule", "Ligule"] },
+            { q: "Alternate phyllotaxy is characteristically found in:", options: ["China rose, Mustard and Sunflower", "Calotropis and Guava", "Alstonia and Nerium", "Guava and China rose"] },
+            { q: "Opposite decussate phyllotaxy is observed in:", options: ["Mustard", "Sunflower", "Calotropis and Guava", "China rose"] },
+            { q: "In a pinnately compound leaf, a number of leaflets are present on a common axis called:", options: ["Petiole", "Rachis", "Pulvinus", "Midrib lamina"] },
+            { q: "A bud is present in the axil of:", options: ["Both simple and compound leaves, but not in axil of leaflets", "Leaflets of compound leaves only", "Neither simple nor compound leaves", "Every leaflet of pinnate leaves"] },
+            { q: "Palmately compound leaf where leaflets are attached at a common point at the tip of petiole is found in:", options: ["Neem", "Silk cotton (Bombax ceiba)", "Rose", "Mustard"] },
+            { q: "Reticulate venation is predominantly found in the leaves of:", options: ["Dicotyledonous plants", "Monocotyledonous plants", "Gymnosperms only", "Bryophytes"] },
+            { q: "In monocots like grasses and sugarcane, the leaf base expands into a sheath covering the stem partially or completely. It is called:", options: ["Pulvinus", "Sheathing leaf base", "Stipule", "Ochrea"] },
+            { q: "Fleshy scale leaves storing food reserves are found in:", options: ["Onion and Garlic", "Ginger and Turmeric", "Sweet potato", "Potato"] },
+            { q: "In Nepenthes (Pitcher plant), the pitcher is a morphological modification of:", options: ["Leaf lamina", "Petiole", "Leaf apex", "Stem internode"] },
+            { q: "The petiole expands, becomes green, flattened and performs photosynthesis, while leaflets are short-lived in:", options: ["Australian acacia (Acacia auriculiformis)", "Citrus", "Clematis", "Smilax"] },
+            { q: "Parallel venation is a characteristic feature of:", options: ["Most monocotyledons (e.g. Grasses, Banana, Maize)", "Most dicotyledons (e.g. Peepal, China rose)", "Pteridophytes only", "Cycadophyta"] },
+            { q: "Which of the following is an insectivorous plant with modified leaves acting as traps?", options: ["Dionaea (Venus flytrap) and Nepenthes", "Cuscuta and Orobanche", "Vanda and Loranthus", "Opuntia and Euphorbia"] },
+            { q: "Stipules are defined as:", options: ["Two lateral small leaf-like outgrowths at the base of petiole", "Swollen base of leaf", "Green winged petiole", "Terminal buds of branches"] },
+            { q: "The primary physiological function of the petiole is to:", options: ["Hold the blade to light and allow it to flutter in wind for cooling", "Store nitrogenous wastes", "Form protective bud scales", "Absorb minerals from air"] },
+            { q: "In Neem (Azadirachta indica), the leaves are:", options: ["Simple leaves with entire margin", "Pinnately compound leaves", "Palmately compound leaves", "Whorled phyllode leaves"] },
+            { q: "In which plant does the petiole become winged and photosynthetic?", options: ["Citrus", "Australian acacia", "Nepenthes", "Lathyrus"] },
+            { q: "In Utricularia (Bladderwort), which organ is modified into bladder-like insect-catching traps?", options: ["Stem branches", "Segments of dissected leaf", "Root tips", "Sepals"] },
+            { q: "Identify the mismatched pair:", options: ["Alternate phyllotaxy - China rose", "Opposite phyllotaxy - Calotropis", "Whorled phyllotaxy - Alstonia", "Leaf tendril - Cucumber"] },
+            { q: "The green expanded portion of the leaf with veins and veinlets is known as:", options: ["Hypopodium", "Mesopodium", "Epipodium or Lamina", "Stipule"] },
+            { q: "In Smilax, stipules are modified into:", options: ["Spines", "Tendrils for climbing", "Glandular hairs", "Scale leaves"] },
+            { q: "Match the items of Column I with Column II: (A) Leaf spine (B) Leaf tendril (C) Fleshy leaf (D) Phyllode [I: Onion, II: Australian acacia, III: Cactus, IV: Pea]", options: ["(A)-III, (B)-IV, (C)-I, (D)-II", "(A)-IV, (B)-III, (C)-I, (D)-II", "(A)-III, (B)-I, (C)-IV, (D)-II", "(A)-I, (B)-II, (C)-III, (D)-IV"] },
+            { q: "A simple leaf is one in which:", options: ["Lamina is completely undivided or incisions do not touch midrib", "Lamina is divided into distinct leaflets reaching petiole", "Veins are totally absent", "Rachis is well developed"] },
+            { q: "Leaves of dicot plants showing parallel venation as an exception include:", options: ["Calophyllum and Corymbium", "Ficus elastica", "Mangifera indica", "Brassica oleracea"] },
+            { q: "In Australian acacia, what adaptation is evolved to reduce transpiration in arid conditions?", options: ["Leaves are large and dorsiventral", "Lamina is shed early and petiole flattens into phyllode", "Stems become non-photosynthetic", "Stomata remain open continuously"] },
+            { q: "Inflorescence is defined as the arrangement of:", options: ["Leaves on a branch", "Flowers on the floral axis (peduncle)", "Ovules within an ovary", "Buds on root apex"] },
+            { q: "In a cymose inflorescence, the main axis:", options: ["Continues to grow indefinitely in acropetal succession", "Terminates in a flower and has limited growth", "Never produces lateral branches", "Opens flowers in centripetal succession"] },
+            { q: "Ray florets of sunflower have:", options: ["Superior ovary", "Inferior ovary", "Half-inferior ovary", "Ovary absent"] },
+            { q: "The ovary is half-inferior in flowers of:", options: ["Mustard", "Plum, Rose and Peach", "China rose", "Guava and Cucumber"] },
+            { q: "Radial symmetry (actinomorphic flower) is found in:", options: ["Brassica (Mustard), Datura, Chilli", "Pisum, Bean, Cassia", "Trifolium, Canna", "Gulmohur, Cassia"] },
+            { q: "Zygomorphic flowers showing bilateral symmetry in only one vertical plane are found in:", options: ["Mustard", "Datura", "Pea, Bean, Gulmohur and Cassia", "Chilli"] },
+            { q: "Flowers which cannot be divided into two similar halves by any vertical plane passing through the centre are called:", options: ["Actinomorphic", "Zygomorphic", "Asymmetric (e.g. Canna)", "Epigynous"] },
+            { q: "Hypogynous flowers with superior ovary are found in:", options: ["Mustard, China rose and Brinjal", "Plum, Rose and Peach", "Guava and Cucumber", "Ray florets of Sunflower"] },
+            { q: "In epigynous flowers, the ovary is:", options: ["Superior", "Inferior", "Half-inferior", "Non-functional"] },
+            { q: "Plum, Rose and Peach show which type of flower?", options: ["Hypogynous", "Perigynous", "Epigynous", "Amphigynous"] },
+            { q: "Which of the following is an example of an epigynous flower?", options: ["Cucumber and Guava", "China rose", "Brinjal", "Mustard"] },
+            { q: "In racemose inflorescence, the flowers are borne laterally in:", options: ["Basipetal succession", "Acropetal succession", "Centrifugal succession", "Irregular whorls"] },
+            { q: "When calyx and corolla are not differentiated into separate whorls, the whorl is called:", options: ["Perianth, and its individual members are tepals", "Epicalyx", "Corona", "Involucre"] },
+            { q: "A flower having both androecium and gynoecium is termed:", options: ["Unisexual", "Bisexual or hermaphrodite", "Staminate", "Pistillate"] },
+            { q: "Reduced leaves found at the base of the pedicel of a flower are known as:", options: ["Stipules", "Bracts", "Phyllodes", "Tepals"] },
+            { q: "The swollen end of the flower stalk (pedicel) on which all four floral whorls are situated is:", options: ["Thalamus or Receptacle", "Rachis", "Peduncle", "Pulvinus"] },
+            { q: "Inflorescence in Solanum (Potato, Brinjal) is:", options: ["Racemose", "Cymose", "Hypanthodium", "Cyathium"] },
+            { q: "In centripetal opening of flowers, the flowers open from:", options: ["Periphery towards the centre", "Centre towards the periphery", "Apex towards the base", "Simultaneously all over"] },
+            { q: "In which inflorescence does the main axis terminate in a flower, checking further elongation?", options: ["Racemose", "Cymose", "Spike", "Catkin"] },
+            { q: "A flower is considered a modified shoot because:", options: ["Shoot apical meristem transforms into floral meristem and internodes do not elongate", "Sepals and petals are green like leaves", "Thalamus possesses deep vascular roots", "It absorbs water and nutrients from soil"] },
+            { q: "Identify the floral formula symbol for an actinomorphic flower:", options: ["%", "\u2295", "\u26a5", "G\u0332"] },
+            { q: "Identify the floral formula symbol representing a superior ovary in a hypogynous flower:", options: ["G\u0304 (line above)", "G- (line in middle)", "G\u0332 (line below)", "K(5)"] },
+            { q: "Which of the following plants possesses zygomorphic flowers?", options: ["Datura", "Mustard", "Gulmohur (Delonix regia)", "Chilli"] },
+            { q: "Inperigynous flower, the thalamus is shaped like a:", options: ["Convex cone", "Cup or saucer-shaped rim", "Flask enclosing ovary completely", "Elongated tubular axis"] },
+            { q: "Which of the following families typically possesses perianth with tepals?", options: ["Liliaceae", "Solanaceae", "Fabaceae", "Brassicaceae"] },
+            { q: "Flowers of Canna are famous for having:", options: ["Radial symmetry", "Bilateral symmetry", "Asymmetry (irregular)", "Epigynous ovary"] },
+            { q: "The order of flower development in a cymose inflorescence is:", options: ["Acropetal (youngest at apex)", "Basipetal (oldest at apex)", "Centripetal", "Alternating"] },
+            { q: "Match List-I with List-II: (A) Mustard (B) Plum (C) Guava (D) Canna [I: Perigynous, II: Epigynous, III: Hypogynous, IV: Asymmetric]", options: ["(A)-III, (B)-I, (C)-II, (D)-IV", "(A)-I, (B)-III, (C)-II, (D)-IV", "(A)-III, (B)-II, (C)-I, (D)-IV", "(A)-II, (B)-I, (C)-III, (D)-IV"] },
+            { q: "In epigynous flowers of cucumber, the calyx, corolla and stamens are inserted:", options: ["Below the ovary", "Around the ovary on thalamus rim", "Above the inferior ovary", "Directly on the stigma"] },
+            { q: "Which of the following represents a bracteate flower?", options: ["A flower lacking calyx", "A flower bearing a reduced leaf at the base of pedicel", "A flower with fused petals", "A unisexual female flower"] },
+            { q: "The arrangement of ovules within the ovary is known as:", options: ["Aestivation", "Placentation", "Phyllotaxy", "Inflorescence"] },
+            { q: "Diadelphous stamens are found in:", options: ["China rose", "Citrus", "Pea (Pisum sativum)", "Mustard"] },
+            { q: "When stamens are attached to the petals, they are described as:", options: ["Epipetalous (e.g. Brinjal)", "Epiphyllous (e.g. Lily)", "Gynandrous", "Syngenesious"] },
+            { q: "Free-central placentation is found in:", options: ["Dianthus and Primrose", "Mustard and Argemone", "Citrus and Tomato", "Sunflower and Marigold"] },
+            { q: "Axile placentation is observed in:", options: ["Argemone and Mustard", "Dianthus and Primrose", "China rose, Tomato and Lemon", "Pea and Gram"] },
+            { q: "In marginal placentation, the placenta forms a ridge along the ventral suture of the ovary in:", options: ["Pea (Pisum)", "Sunflower", "Mustard", "Lemon"] },
+            { q: "Basal placentation with a single ovule attached at the base of unilocular ovary is characteristic of:", options: ["Sunflower and Marigold (Asteraceae)", "Mustard and Radish", "Tomato and Brinjal", "Pea and Bean"] },
+            { q: "A sterile stamen that does not produce fertile pollen is called a:", options: ["Staminode", "Pistillode", "Carpel", "Tepal"] },
+            { q: "Placentation in Mustard and Argemone is:", options: ["Axile", "Parietal", "Free central", "Basal"] },
+            { q: "In parietal placentation, the ovary is unilocular but in mustard it becomes two-chambered due to the formation of a false septum termed:", options: ["Replum", "Funiculus", "Carina", "Tegmen"] },
+            { q: "The mode of arrangement of sepals or petals in floral bud with respect to other members of the same whorl is called:", options: ["Vernish", "Aestivation", "Placentation", "Phyllotaxy"] },
+            { q: "Vexillary or papilionaceous aestivation is characteristic of family:", options: ["Solanaceae", "Fabaceae (Papilionaceae)", "Liliaceae", "Brassicaceae"] },
+            { q: "In vexillary aestivation, the largest posterior petal is called:", options: ["Standard or Vexillum", "Wings or Alae", "Keel or Carina", "Corona"] },
+            { q: "In Calotropis, sepals merely touch one another at the margin without overlapping. This aestivation is termed:", options: ["Valvate", "Twisted", "Imbricate", "Vexillary"] },
+            { q: "Twisted aestivation where one margin of an appendage overlaps that of the next is found in:", options: ["China rose, Lady's finger and Cotton", "Calotropis and Mustard", "Cassia and Gulmohur", "Pea and Bean"] },
+            { q: "Imbricate aestivation where margins overlap each other but not in any particular direction is found in:", options: ["Cassia and Gulmohur", "Cotton and Lady's finger", "Calotropis", "Pea"] },
+            { q: "When stamens are united into a single bundle or tube as in China rose (Hibiscus), the condition is called:", options: ["Monadelphous", "Diadelphous", "Polyadelphous", "Syngenesious"] },
+            { q: "Polyadelphous condition where stamens are united into several bundles is found in:", options: ["Citrus (Lemon, Orange)", "Pea", "China rose", "Salvia"] },
+            { q: "There may be a variation in the length of stamen filaments within a flower, as seen in:", options: ["Salvia and Mustard", "Pea and Bean", "China rose and Cotton", "Tomato and Brinjal"] },
+            { q: "Stamens attached to perianth / tepals (epiphyllous) are found in:", options: ["Lily (Liliaceae)", "Brinjal (Solanaceae)", "Mustard (Brassicaceae)", "Gram (Fabaceae)"] },
+            { q: "When more than one carpel is present and they are free from each other, the gynoecium is called:", options: ["Apocarpous (e.g. Lotus, Rose)", "Syncarpous (e.g. Mustard, Tomato)", "Monocarpellary", "Staminodial"] },
+            { q: "When carpels are completely fused together, the gynoecium is termed:", options: ["Apocarpous", "Syncarpous", "Monadelphous", "Perigynous"] },
+            { q: "Syngenesious condition of androecium where anthers are united and filaments are free occurs in:", options: ["Asteraceae (Sunflower)", "Fabaceae", "Solanaceae", "Liliaceae"] },
+            { q: "In vexillary corolla, the two lateral petals are called:", options: ["Vexillum", "Wings or Alae", "Carina or Keel", "Corona"] },
+            { q: "The two smallest anterior fused petals enclosing stamens and pistil in papilionaceous flower form the:", options: ["Vexillum", "Alae", "Keel or Carina", "Standard"] },
+            { q: "Tetradynamous stamens having 4 long inner and 2 short outer stamens occur in:", options: ["Brassica (Mustard / Brassicaceae)", "Solanum (Solanaceae)", "Pisum (Fabaceae)", "Allium (Liliaceae)"] },
+            { q: "Persistent calyx which remains attached to the mature fruit is characteristically found in:", options: ["Solanaceae (Brinjal, Tomato, Chilli)", "Fabaceae (Pea)", "Liliaceae (Lily)", "Asteraceae (Sunflower)"] },
+            { q: "Match List-I with List-II: (A) Marginal placentation (B) Axile placentation (C) Parietal placentation (D) Free central placentation [I: Dianthus, II: Mustard, III: Tomato, IV: Pea]", options: ["(A)-IV, (B)-III, (C)-II, (D)-I", "(A)-III, (B)-IV, (C)-I, (D)-II", "(A)-IV, (B)-I, (C)-II, (D)-III", "(A)-II, (B)-III, (C)-IV, (D)-I"] },
+            { q: "Didynamous condition with two long and two short stamens is found in:", options: ["Ocimum and Salvia (Lamiaceae)", "Mustard", "Pea", "Hibiscus"] },
+            { q: "In unilocular ovary, when ovules are borne on a central column without any septa, it is termed:", options: ["Axile", "Parietal", "Free central", "Marginal"] },
+            { q: "Which of the following plants shows syncarpous gynoecium?", options: ["Mustard and Tomato", "Lotus and Rose", "Michelia", "Ranunculus"] },
+            { q: "Multilocular ovary with ovules attached to central axis is found in:", options: ["China rose, Tomato and Lemon", "Mustard and Argemone", "Pea and Bean", "Dianthus and Primrose"] },
+            { q: "Gamosepalous condition indicates:", options: ["Sepals free from each other", "Sepals united with each other", "Petals united with stamens", "Tepals united into tube"] },
+            { q: "Select the CORRECT combination of aestivation and example:", options: ["Valvate - Calotropis", "Twisted - Cassia", "Imbricate - China rose", "Vexillary - Mustard"] },
+            { q: "A flower with polypetalous corolla has:", options: ["United petals", "Free petals", "United stamens", "Absent perianth"] },
+            { q: "In mango and coconut, the fruit is known as a:", options: ["Berry", "Drupe", "Pome", "Legume"] },
+            { q: "The edible part of coconut (Cocos nucifera) represents:", options: ["Mesocarp", "Endocarp", "Endosperm of seed", "Pericarp"] },
+            { q: "An aggregate fruit is one which develops from:", options: ["Multicarpellary syncarpous gynoecium", "Multicarpellary apocarpous gynoecium", "Complete inflorescence", "Monocarpellary superior ovary"] },
+            { q: "The morphological nature of the edible part of coconut water is:", options: ["Free-nuclear endosperm", "Cellular endosperm", "Liquid mesocarp", "Perisperm"] },
+            { q: "Which one of the following is a true fruit?", options: ["Apple", "Pear", "Mango", "Cashew nut"] },
+            { q: "In false fruits, which floral part enlarges to become fleshy along with the ovary?", options: ["Pedicel", "Thalamus / Receptacle", "Style", "Stigma"] },
+            { q: "In mango, the edible fleshy part is the:", options: ["Epicarp", "Mesocarp", "Endocarp", "Thalamus"] },
+            { q: "Coconut fruit is a drupe developed from a:", options: ["Monocarpellary superior ovary and is one-seeded", "Bicarpellary inferior ovary and is two-seeded", "Polycarpellary syncarpous ovary and multi-seeded", "Monocarpellary inferior ovary"] },
+            { q: "In coconut, the mesocarp is:", options: ["Fleshy and succulent", "Fibrous", "Hard and stony", "Papery thin"] },
+            { q: "Parthenocarpic fruits are developed without fertilization and are characteristically:", options: ["Seedless (e.g. Banana)", "Many-seeded", "Hard and stony", "Dry dehiscent pods"] },
+            { q: "The fruit wall developing from the ovary wall is technically called:", options: ["Testa", "Pericarp", "Perisperm", "Aleurone"] },
+            { q: "The inner stony, hard, lignified layer of the drupe in mango and coconut is the:", options: ["Epicarp", "Mesocarp", "Endocarp", "Scutellum"] },
+            { q: "Which of the following is a composite or multiple fruit developed from a complete inflorescence?", options: ["Fig (Syconus) and Pineapple (Sorosis)", "Mango and Peach", "Tomato and Brinjal", "Pea and Mustard"] },
+            { q: "The fruit of apple is described as a pome (false fruit) because the fleshy edible part is derived from the:", options: ["Thalamus", "Endocarp", "Mesocarp", "Cotyledon"] },
+            { q: "In cashew nut, the edible nut represents the seed, while the fleshy swollen 'apple' is the:", options: ["Pedicel and Thalamus", "Ovary wall", "Endosperm", "Mesocarp"] },
+            { q: "Syconus fruit of Ficus (Fig, Peepal, Banyan) develops from which specialized inflorescence?", options: ["Hypanthodium", "Cyathium", "Verticillaster", "Spikelet"] },
+            { q: "In tomato, guava and grape, the entire pericarp along with placenta is fleshy and edible. Such fruits are classified as:", options: ["Drupes", "Berries", "Pomes", "Achenes"] },
+            { q: "In Citrus (Orange and Lemon), the edible juicy structures are:", options: ["Endocarpic unicellular juicy hairs", "Fleshy mesocarp", "Thalamus", "Cotyledons"] },
+            { q: "Assertion (A): Mango is a drupe fruit. Reason (R): It develops from a monocarpellary superior ovary and has a stony hard endocarp.", options: ["Both (A) and (R) are true and (R) is the correct explanation of (A)", "Both (A) and (R) are true but (R) is not the correct explanation of (A)", "(A) is true but (R) is false", "Both (A) and (R) are false"] },
+            { q: "Commercial coir fiber used for ropes and mats is extracted from the:", options: ["Mesocarp of Coconut (Cocos nucifera)", "Endocarp of Mango", "Epicarp of Palm", "Seed coat of Cotton"] },
+            { q: "The single cotyledon of cereal and grass grain monocot seed is known as:", options: ["Coleoptile", "Scutellum", "Coleorhiza", "Aleurone"] },
+            { q: "In monocot seeds, the plumule is enclosed in a protective sheath called:", options: ["Coleoptile", "Coleorhiza", "Scutellum", "Suspensor"] },
+            { q: "In a dicot seed like gram or pea, the scar on the seed coat through which the developing seed was attached to the fruit is called:", options: ["Micropyle", "Hilum", "Raphe", "Chalaza"] },
+            { q: "The outer proteinaceous layer of the endosperm in maize grain is the:", options: ["Aleurone layer", "Scutellum", "Coleoptile", "Tegmen"] },
+            { q: "Which of the following is an endospermic (albuminous) dicot seed?", options: ["Castor (Ricinus communis)", "Gram", "Pea", "Bean"] },
+            { q: "Non-endospermic (exalbuminous) seeds where endosperm is completely consumed by the developing embryo are found in:", options: ["Gram, Pea and Bean", "Castor and Maize", "Wheat and Barley", "Onion and Tomato"] },
+            { q: "The radicle and root cap in a monocot seed are enclosed in an undifferentiated protective sheath termed:", options: ["Coleorhiza", "Coleoptile", "Scutellum", "Perisperm"] },
+            { q: "The micropyle remains as a small pore in the seed coat. It facilitates:", options: ["Entry of water and oxygen during germination", "Exit of food reserves", "Fixation of nitrogen", "Secretion of auxins"] },
+            { q: "The two layers of the seed coat in a dicot seed are outer ______ and inner ______:", options: ["Testa; Tegmen", "Tegmen; Testa", "Pericarp; Perisperm", "Endocarp; Mesocarp"] },
+            { q: "Persistent perisperm representing the remnant of nucellus is found in mature seeds of:", options: ["Black pepper and Beet", "Castor and Pea", "Gram and Bean", "Maize and Wheat"] },
+            { q: "Which monocotyledonous plant family possesses non-endospermic seeds as an exception?", options: ["Orchidaceae (Orchids)", "Gramineae (Poaceae)", "Liliaceae", "Palmae"] },
+            { q: "Floral formula: % \u26a5 K(5) C1+2+(2) A(9)+1 G\u03321 corresponds to which family?", options: ["Fabaceae", "Solanaceae", "Liliaceae", "Brassicaceae"] },
+            { q: "Floral formula: \u2295 \u26a5 K(5) C(5) A5 G\u0332(2) represents family:", options: ["Solanaceae", "Fabaceae", "Liliaceae", "Asteraceae"] },
+            { q: "Floral formula: Br \u2295 \u26a5 P(3+3) A3+3 G\u0332(3) is characteristic of:", options: ["Liliaceae", "Solanaceae", "Fabaceae", "Poaceae"] },
+            { q: "Bicarpellary syncarpous superior ovary with obliquely placed carpels and swollen axile placenta is a diagnostic feature of:", options: ["Solanaceae (e.g. Potato, Tomato, Brinjal)", "Fabaceae (e.g. Pea, Gram)", "Liliaceae (e.g. Lily, Onion)", "Brassicaceae (e.g. Mustard)"] },
+            { q: "Colchicum autumnale, a source of the mitotic poison colchicine, belongs to family:", options: ["Liliaceae", "Solanaceae", "Fabaceae", "Asteraceae"] },
+            { q: "Which of the following medicinal plants belongs to family Solanaceae?", options: ["Belladonna and Ashwagandha", "Aloe and Asparagus", "Mulethi and Sunhemp", "Trifolium and Sesbania"] },
+            { q: "In Fabaceae, the fruit is typically a:", options: ["Legume (pod)", "Berry", "Capsule", "Siliqua"] },
+            { q: "Tricarpellary, syncarpous, superior ovary with axile placentation is found in:", options: ["Liliaceae (e.g. Allium, Tulip, Gloriosa)", "Solanaceae", "Fabaceae", "Brassicaceae"] },
+            { q: "Tetradynamous stamens and cruciform corolla are characteristic of family:", options: ["Brassicaceae (Cruciferae)", "Fabaceae", "Solanaceae", "Liliaceae"] },
+            { q: "Which of the following is a dye-yielding plant belonging to family Fabaceae?", options: ["Indigofera", "Sesbania", "Trifolium", "Lupinus"] },
+            { q: "In floral diagram, the dot at the top of the diagram represents the:", options: ["Mother axis", "Main root axis", "Micropyle", "Anterior petal"] },
+            { q: "Ornamental plants Lupin and Sweet pea belong to family:", options: ["Fabaceae", "Solanaceae", "Liliaceae", "Asteraceae"] },
+            { q: "In maize grain, the seed coat is membranous and generally:", options: ["Fused with the fruit wall (pericarp)", "Free and distinct", "Lacking completely", "Transformed into aril"] },
+            { q: "Match List-I (Plant) with List-II (Family): (A) Petunia (B) Trifolium (C) Gloriosa (D) Brassica [I: Liliaceae, II: Brassicaceae, III: Solanaceae, IV: Fabaceae]", options: ["(A)-III, (B)-IV, (C)-I, (D)-II", "(A)-IV, (B)-III, (C)-I, (D)-II", "(A)-III, (B)-I, (C)-IV, (D)-II", "(A)-I, (B)-II, (C)-III, (D)-IV"] },
+        ];
 
-            if (!name || !roll || !email) { alert("Please fill all details."); return; }
-
+        // ==========================================
+        // 4. GOOGLE AUTH INITIALIZATION
+        // ==========================================
+        window.onload = () => {
             try {
-                stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                document.getElementById('video-preview').srcObject = stream;
-                startRecording();
-                startTimer();
-                startFaceDetection();
-                
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('exam-screen').classList.remove('hidden');
-                loadQuestion();
+                if (window.google && google.accounts && google.accounts.oauth2) {
+                    tokenClient = google.accounts.oauth2.initTokenClient({
+                        client_id: CLIENT_ID,
+                        scope: 'https://www.googleapis.com/auth/drive.file',
+                        callback: (tokenResponse) => {
+                            if (tokenResponse && tokenResponse.access_token) {
+                                accessToken = tokenResponse.access_token;
+                                actuallyStartExam();
+                            } else {
+                                alert("Google Drive Authorization was not completed. Camera and proctoring will proceed.");
+                                actuallyStartExam();
+                            }
+                        },
+                    });
+                }
             } catch (err) {
-                alert("Camera access is required to take this exam. Please allow camera permissions and refresh.");
+                console.warn("Google Identity Services initialization:", err);
+            }
+        };
+
+        // ==========================================
+        // 5. PROCTORING SECURITY LISTENERS
+        // ==========================================
+        // Block Copy, Cut, Paste, and Context Menu
+        document.addEventListener('copy', (e) => { if (examActive) e.preventDefault(); });
+        document.addEventListener('cut', (e) => { if (examActive) e.preventDefault(); });
+        document.addEventListener('paste', (e) => { if (examActive) e.preventDefault(); });
+        document.addEventListener('contextmenu', (e) => { if (examActive) e.preventDefault(); });
+
+        // Tab-Switch & Blur Detection
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden && examActive && !examSubmitted) {
+                cancelExam("Tab switching or window minimization was detected.");
+            }
+        });
+
+
+
+        // ==========================================
+        // 6. EXAM LIFECYCLE FUNCTIONS
+        // ==========================================
+        function showInstructions() {
+            const name = document.getElementById('student-name').value.trim();
+            const contact = document.getElementById('student-contact').value.trim();
+            const email = document.getElementById('student-email').value.trim();
+
+            if (!name || !contact || !email) {
+                alert("Please fill in Full Name, Contact Number, and Email Address.");
+                return;
+            }
+
+            document.getElementById('instruction-modal').classList.remove('hidden');
+        }
+
+        function startExam() {
+            document.getElementById('instruction-modal').classList.add('hidden');
+            
+            // Request Google OAuth Access Token
+            if (tokenClient) {
+                try {
+                    tokenClient.requestAccessToken();
+                } catch (e) {
+                    console.warn("OAuth request token failed:", e);
+                    actuallyStartExam();
+                }
+            } else {
+                actuallyStartExam();
             }
         }
 
-        // 2. RECORDING LOGIC
-        function startRecording() {
-            mediaRecorder = new MediaRecorder(stream);
-            mediaRecorder.ondataavailable = (event) => {
-                if (event.data.size > 0) recordedChunks.push(event.data);
-            };
-            mediaRecorder.start();
+        async function actuallyStartExam() {
+            try {
+                mediaStream = await navigator.mediaDevices.getUserMedia({
+                    video: { width: 320, height: 240, frameRate: 15 },
+                    audio: false
+                });
+                
+                const videoEl = document.getElementById('video-preview');
+                videoEl.srcObject = mediaStream;
+                
+                startVideoRecording();
+                startTimer();
+                startFaceDetectionLoop();
+                
+                examActive = true;
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('exam-screen').classList.remove('hidden');
+                
+                loadQuestion();
+            } catch (err) {
+                alert("Camera access is strictly mandatory for proctoring. Please allow camera permissions and reload the page.");
+            }
         }
 
-        // 3. TIMER LOGIC
+        function startVideoRecording() {
+            try {
+                recordedChunks = [];
+                const options = { mimeType: 'video/webm;codecs=vp8', videoBitsPerSecond: 100000 };
+                
+                if (MediaRecorder.isTypeSupported('video/webm;codecs=vp8')) {
+                    mediaRecorder = new MediaRecorder(mediaStream, options);
+                } else {
+                    mediaRecorder = new MediaRecorder(mediaStream);
+                }
+                
+                mediaRecorder.ondataavailable = (event) => {
+                    if (event.data && event.data.size > 0) {
+                        recordedChunks.push(event.data);
+                    }
+                };
+                
+                mediaRecorder.start(3000); // chunk every 3s
+            } catch (e) {
+                console.warn("MediaRecorder start:", e);
+            }
+        }
+
         function startTimer() {
-            setInterval(() => {
+            timeElapsed = 0;
+            timerInterval = setInterval(() => {
                 timeElapsed++;
                 const mins = Math.floor(timeElapsed / 60).toString().padStart(2, '0');
                 const secs = (timeElapsed % 60).toString().padStart(2, '0');
@@ -112,27 +1264,85 @@
             }, 1000);
         }
 
-        // 4. FACE DETECTION (30s Rule)
-        function startFaceDetection() {
-            setInterval(async () => {
-                if ('FaceDetector' in window) {
-                    const faceDetector = new FaceDetector();
-                    const faces = await faceDetector.detect(document.getElementById('video-preview'));
-                    
-                    if (faces.length === 0) {
-                        if (!faceDisappearedTime) faceDisappearedTime = Date.now();
-                        
-                        const elapsed = Date.now() - faceDisappearedTime;
-                        if (elapsed > 10000 && !warningActive) {
-                            document.getElementById('warning-box').style.display = 'block';
-                            warningActive = true;
+        // ==========================================
+        // 7. FACE DETECTION PROCTORING
+        // ==========================================
+        function startFaceDetectionLoop() {
+            const videoEl = document.getElementById('video-preview');
+            const canvas = document.getElementById('fallback-canvas');
+            const ctx = canvas.getContext('2d');
+            const hasNativeDetector = ('FaceDetector' in window);
+            let nativeDetector = null;
+            
+            if (hasNativeDetector) {
+                try {
+                    nativeDetector = new FaceDetector({ maxDetectedFaces: 3, fastMode: true });
+                } catch (e) {
+                    nativeDetector = null;
+                }
+            }
+
+            faceCheckInterval = setInterval(async () => {
+                if (!examActive || examSubmitted) return;
+
+                let faceDetected = false;
+
+                if (nativeDetector) {
+                    try {
+                        const faces = await nativeDetector.detect(videoEl);
+                        if (faces && faces.length > 0) {
+                            faceDetected = true;
                         }
-                        if (elapsed > 30000) {
-                            alert("Exam Cancelled: Face not detected for 30 seconds.");
-                            cancelExam();
+                    } catch (err) {
+                        faceDetected = true; // prevent false lock if API glitches
+                    }
+                } else {
+                    // Fallback luminance & variance heuristic
+                    try {
+                        if (videoEl.videoWidth > 0 && videoEl.videoHeight > 0) {
+                            ctx.drawImage(videoEl, 0, 0, canvas.width, canvas.height);
+                            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+                            let sum = 0;
+                            let sumSq = 0;
+                            const totalPixels = imgData.length / 4;
+                            for (let i = 0; i < imgData.length; i += 4) {
+                                const luma = 0.299 * imgData[i] + 0.587 * imgData[i+1] + 0.114 * imgData[i+2];
+                                sum += luma;
+                                sumSq += luma * luma;
+                            }
+                            const mean = sum / totalPixels;
+                            const variance = (sumSq / totalPixels) - (mean * mean);
+                            // If mean > 15 (not pitch dark) and variance > 80 (has features/contrast)
+                            if (mean > 15 && variance > 60) {
+                                faceDetected = true;
+                            }
+                        } else {
+                            faceDetected = true;
                         }
-                    } else {
-                        faceDisappearedTime = null;
+                    } catch (e) {
+                        faceDetected = true;
+                    }
+                }
+
+                if (!faceDetected) {
+                    if (!faceDisappearedStartTime) {
+                        faceDisappearedStartTime = Date.now();
+                    }
+                    const elapsedMs = Date.now() - faceDisappearedStartTime;
+
+                    // After 10s: Show Warning
+                    if (elapsedMs >= 10000 && !warningActive) {
+                        document.getElementById('warning-box').style.display = 'block';
+                        warningActive = true;
+                    }
+
+                    // After 30s: Cancel Exam
+                    if (elapsedMs >= 30000) {
+                        cancelExam("Face not detected on camera for more than 30 seconds.");
+                    }
+                } else {
+                    faceDisappearedStartTime = null;
+                    if (warningActive) {
                         warningActive = false;
                         document.getElementById('warning-box').style.display = 'none';
                     }
@@ -140,91 +1350,325 @@
             }, 1000);
         }
 
-        // 5. TAB SWITCH DETECTION
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                alert("Exam Cancelled: Tab switching detected.");
-                cancelExam();
+        function cancelExam(reason) {
+            if (examSubmitted) return; // Prevent double submission
+            examActive = false;
+            clearInterval(timerInterval);
+            clearInterval(faceCheckInterval);
+            
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                try { mediaRecorder.stop(); } catch (e) {}
             }
-        });
+            if (mediaStream) {
+                mediaStream.getTracks().forEach(t => t.stop());
+            }
+            
+            document.getElementById('video-preview').style.display = 'none';
+            document.getElementById('warning-box').style.display = 'none';
+            document.getElementById('exam-screen').classList.add('hidden');
+            
+            document.getElementById('cancelled-reason').innerText = reason || "Exam was cancelled due to a proctoring violation.";
+            document.getElementById('cancelled-screen').classList.remove('hidden');
 
-        // Helper to cancel exam
-        function cancelExam() {
-            if(mediaRecorder) mediaRecorder.stop();
-            if(stream) stream.getTracks().forEach(track => track.stop());
-            document.getElementById('exam-screen').innerHTML = "<h2>Exam Cancelled due to proctoring violation.</h2>";
+            // NEW: Send the data to the backend anyway, flagged as terminated
+            submitExam(true, reason); 
         }
 
-        // 6. QUESTION LOGIC
+        // ==========================================
+        // 8. QUESTION DISPLAY & NAVIGATION
+        // ==========================================
         function loadQuestion() {
-            // PASTE YOUR 200 QUESTIONS HERE IN THIS FORMAT
-            const questions = [
-                { q: "In mustard plant, the root system is formed directly by the elongation of the radicle. Such a root system is known as:", options: ["Fibrous root system", "Tap root system", "Adventitious root system", "Stilt root system"] },
-                { q: "Roots that develop from parts of the plant other than the radicle are called:", options: ["Tap roots", "Adventitious roots", "Primary roots", "Fibrous roots"] },
-                // ... Add remaining 198 questions here
-            ];
-
-            if (currentQuestion >= questions.length) { submitExam(); return; }
+            if (currentQuestion >= questions.length) {
+                submitExam();
+                return;
+            }
 
             const q = questions[currentQuestion];
-            document.getElementById('q-num').innerText = currentQuestion + 1;
-            document.getElementById('q-text').innerText = q.q;
-            
+            document.getElementById('q-number-badge').innerText = `Question ${currentQuestion + 1} / ${questions.length}`;
+            document.getElementById('q-text').innerText = `Q${currentQuestion + 1}. ${q.q}`;
+
             const optionsContainer = document.getElementById('options-container');
             optionsContainer.innerHTML = '';
-            
-            q.options.forEach((opt, index) => {
+
+            const optionLetters = ['A', 'B', 'C', 'D'];
+
+            q.options.forEach((optText, idx) => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
-                if (answers[currentQuestion] === index + 1) btn.classList.add('selected');
-                btn.innerText = `${index + 1}. ${opt}`;
-                btn.onclick = () => selectOption(index + 1);
+                if (answers[currentQuestion] === idx + 1) {
+                    btn.classList.add('selected');
+                }
+
+                btn.innerHTML = `
+                    <span class="opt-letter">${optionLetters[idx]}</span>
+                    <span class="opt-text">${optText}</span>
+                `;
+
+                btn.onclick = () => selectOption(idx + 1);
                 optionsContainer.appendChild(btn);
             });
+
+            updatePalette();
         }
 
-        function selectOption(optionIndex) {
-            answers[currentQuestion] = optionIndex;
+        function selectOption(optionNumber) {
+            answers[currentQuestion] = optionNumber;
             loadQuestion();
         }
 
-        function nextQuestion() {
-            if (currentQuestion < 199) { currentQuestion++; loadQuestion(); }
+        function clearResponse() {
+            answers[currentQuestion] = null;
+            loadQuestion();
         }
 
-        function skipQuestion() {
-            if (currentQuestion < 199) { currentQuestion++; loadQuestion(); }
+        function markForReviewAndNext() {
+            markedForReview[currentQuestion] = !markedForReview[currentQuestion];
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                updatePalette();
+            }
         }
 
-        // 7. SUBMIT EXAM
-        async function submitExam() {
-            if(mediaRecorder) mediaRecorder.stop();
-            mediaRecorder.onstop = async () => {
-                const blob = new Blob(recordedChunks, { type: 'video/webm' });
-                
-                const reader = new FileReader();
-                reader.readAsDataURL(blob);
-                reader.onloadend = async () => {
-                    const base64data = reader.result;
-                    
-                    const payload = {
-                        studentName: document.getElementById('student-name').value,
-                        rollNumber: document.getElementById('student-roll').value,
-                        studentEmail: document.getElementById('student-email').value,
-                        answers: answers,
-                        videoData: base64data
-                    };
+        function saveAndNext() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                updatePalette();
+            }
+        }
 
-                    await fetch(APPS_SCRIPT_URL, {
-                        method: 'POST',
-                        body: JSON.stringify(payload)
-                    });
+        function updatePalette() {
+            const paletteGrid = document.getElementById('palette-grid');
+            paletteGrid.innerHTML = '';
 
-                    if(stream) stream.getTracks().forEach(track => track.stop());
-                    document.getElementById('exam-screen').classList.add('hidden');
-                    document.getElementById('result-screen').classList.remove('hidden');
+            for (let i = 0; i < questions.length; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'palette-btn';
+
+                if (i === currentQuestion) {
+                    btn.classList.add('current');
+                }
+
+                const isAnswered = (answers[i] !== null && answers[i] !== undefined);
+                const isMarked = markedForReview[i];
+
+                if (isAnswered && isMarked) {
+                    btn.classList.add('answered-marked');
+                } else if (isAnswered) {
+                    btn.classList.add('answered');
+                } else if (isMarked) {
+                    btn.classList.add('marked');
+                }
+
+                btn.innerText = i + 1;
+                btn.onclick = () => {
+                    currentQuestion = i;
+                    loadQuestion();
                 };
+
+                paletteGrid.appendChild(btn);
+            }
+        }
+
+        // ==========================================
+        // 9. SUBMISSION & BACKEND SCORING
+        // ==========================================
+        function confirmSubmitExam() {
+            const answeredCount = answers.filter(a => a !== null).length;
+            const confirmMsg = `Are you sure you want to submit the exam?\n\nTotal Questions: ${questions.length}\nAnswered: ${answeredCount}\nUnattempted: ${questions.length - answeredCount}`;
+            if (confirm(confirmMsg)) {
+                submitExam();
+            }
+        }
+
+        async function uploadVideoToDrive(videoBlob, studentName, studentContact) {
+            if (!accessToken) return null;
+            try {
+                const cleanName = (studentName || 'Student').replace(/[^a-zA-Z0-9]/g, '_');
+                const cleanContact = (studentContact || 'Contact').replace(/[^a-zA-Z0-9]/g, '_');
+                const filename = `Exam_${cleanName}_${cleanContact}_${Date.now()}.webm`;
+
+                const metadata = {
+                    name: filename,
+                    parents: [DRIVE_FOLDER_ID]
+                };
+
+                const boundary = '-------314159265358979323846';
+                const delimiter = "\r\n--" + boundary + "\r\n";
+                const close_delim = "\r\n--" + boundary + "--";
+
+                const base64Data = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => resolve(reader.result.split(',')[1]);
+                    reader.readAsDataURL(videoBlob);
+                });
+
+                const multipartRequestBody =
+                    delimiter +
+                    'Content-Type: application/json; charset=UTF-8\r\n\r\n' +
+                    JSON.stringify(metadata) +
+                    delimiter +
+                    'Content-Type: video/webm\r\n' +
+                    'Content-Transfer-Encoding: base64\r\n\r\n' +
+                    base64Data +
+                    close_delim;
+
+                const response = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'multipart/related; boundary=' + boundary
+                    },
+                    body: multipartRequestBody
+                });
+
+                const resData = await response.json();
+                return resData.id || null;
+            } catch (err) {
+                console.warn("Drive upload error:", err);
+                return null;
+            }
+        }
+
+        async function submitExam(isTerminated = false, terminationReason = "") {
+            if (examSubmitted) return;
+            examSubmitted = true;
+            examActive = false;
+
+            clearInterval(timerInterval);
+            clearInterval(faceCheckInterval);
+
+            // Stop media stream & recorder
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                try { mediaRecorder.stop(); } catch (e) {}
+            }
+            if (mediaStream) {
+                mediaStream.getTracks().forEach(t => t.stop());
+            }
+            document.getElementById('video-preview').style.display = 'none';
+            document.getElementById('warning-box').style.display = 'none';
+
+            if (!isTerminated) {
+                // Show a submitting status
+                document.getElementById('exam-screen').innerHTML = `
+                <div style="display:flex; justify-content:center; align-items:center; height:100vh; flex-direction:column; gap:16px;">
+                    <div style="font-size:32px;">🌿</div>
+                    <h2 style="color:var(--dark-green); font-weight:600;">Submitting your exam, please wait...</h2>
+                    <p style="color:var(--text-light); font-size:14px;">Uploading proctored recording and evaluating responses.</p>
+                </div>
+            `;
+            }
+
+            // Wait a brief moment for recordedChunks
+            await new Promise(r => setTimeout(r, 600));
+
+            const studentName = document.getElementById('student-name').value.trim();
+            const studentContact = document.getElementById('student-contact').value.trim();
+            const studentEmail = document.getElementById('student-email').value.trim();
+
+            let videoFileId = null;
+            if (recordedChunks.length > 0) {
+                const videoBlob = new Blob(recordedChunks, { type: 'video/webm' });
+                videoFileId = await uploadVideoToDrive(videoBlob, studentName, studentContact);
+            }
+
+            const payload = {
+                studentName: studentName,
+                studentContact: studentContact,
+                studentEmail: studentEmail,
+                answers: answers,
+                videoFileId: videoFileId,
+                isTerminated: isTerminated,
+                terminationReason: terminationReason
             };
+
+            try {
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+
+                const responseData = await response.json();
+                if (!isTerminated) {
+                    if (responseData && responseData.result) {
+                        document.getElementById('exam-screen').classList.add('hidden');
+                        document.getElementById('result-screen').classList.remove('hidden');
+                        displayResultOnScreen(responseData.result);
+                    } else {
+                        throw new Error("Invalid response format from Apps Script");
+                    }
+                }
+            } catch (error) {
+                console.error("Backend scoring failed:", error);
+                if (!isTerminated) {
+                    document.getElementById('exam-screen').innerHTML = `
+                    <div style="display:flex; justify-content:center; align-items:center; height:100vh; flex-direction:column; gap:16px; padding:30px; text-align:center;">
+                        <h2 style="color:var(--primary-green);">🌿 Exam Submitted Successfully!</h2>
+                        <p style="color:var(--text-dark); max-width:480px;">Your responses and proctoring video have been submitted. Result processing is currently finalizing on the institute server and will be sent to <strong>${studentEmail}</strong>.</p>
+                        <button class="btn-primary" style="max-width:200px;" onclick="window.location.reload()">Finish</button>
+                    </div>
+                `;
+                }
+            }
+        }
+
+        function displayResultOnScreen(result) {
+            const total = result.total || questions.length;
+            const correct = result.correct || 0;
+            const incorrect = result.incorrect || 0;
+            const unattempted = result.unattempted || 0;
+            const totalScore = (result.totalScore !== undefined) ? result.totalScore : (correct * 4 - incorrect * 1);
+
+            const summaryEl = document.getElementById('result-summary');
+            summaryEl.innerHTML = `
+                <div class="summary-box">
+                    <span class="summary-label">Total Questions</span>
+                    <span class="summary-val">${total}</span>
+                </div>
+                <div class="summary-box">
+                    <span class="summary-label">Correct</span>
+                    <span class="summary-val" style="color: var(--primary-green);">${correct}</span>
+                </div>
+                <div class="summary-box">
+                    <span class="summary-label">Incorrect</span>
+                    <span class="summary-val" style="color: var(--danger);">${incorrect}</span>
+                </div>
+                <div class="summary-box">
+                    <span class="summary-label">Unattempted</span>
+                    <span class="summary-val" style="color: var(--warning);">${unattempted}</span>
+                </div>
+                <div class="summary-box">
+                    <span class="summary-label">Total Score</span>
+                    <span class="summary-val" style="color: var(--dark-green);">${totalScore} / ${total * 4}</span>
+                </div>
+            `;
+
+            const tbody = document.getElementById('result-body');
+            tbody.innerHTML = '';
+
+            const optionLetters = ['None', 'A', 'B', 'C', 'D'];
+
+            if (result.details && Array.isArray(result.details)) {
+                result.details.forEach(d => {
+                    const tr = document.createElement('tr');
+                    const statusClass = d.status === 'Correct' ? 'status-correct' : (d.status === 'Incorrect' ? 'status-incorrect' : 'status-unattempted');
+                    
+                    const chosenText = (typeof d.chosen === 'number') ? `${optionLetters[d.chosen] || d.chosen} (${d.chosen})` : (d.chosen || 'Unattempted');
+                    const correctText = (typeof d.correct === 'number') ? `${optionLetters[d.correct] || d.correct} (${d.correct})` : (d.correct || '-');
+
+                    tr.innerHTML = `
+                        <td><strong>Q${d.q}</strong></td>
+                        <td>${chosenText}</td>
+                        <td>${correctText}</td>
+                        <td class="${statusClass}">${d.status}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
         }
     </script>
 </body>
