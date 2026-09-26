@@ -739,6 +739,223 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #a3b8a3;
         }
+    
+        /* ---------------- MOBILE DRAWER & RESPONSIVE FIXES ---------------- */
+        .close-drawer-btn {
+            display: none;
+        }
+
+        .palette-fab {
+            display: none;
+            position: fixed;
+            bottom: 90px;
+            right: 16px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--primary-green);
+            color: #ffffff;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            z-index: 2400;
+            cursor: pointer;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            line-height: 1.1;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .palette-fab:hover {
+            background: var(--dark-green);
+        }
+
+        .palette-fab:active {
+            transform: scale(0.95);
+        }
+
+        .palette-fab span {
+            font-size: 8.5px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                height: auto;
+                min-height: 100vh;
+                overflow: auto;
+            }
+
+            .exam-header {
+                padding-right: 80px;
+            }
+
+            #video-preview {
+                position: fixed;
+                top: 8px;
+                right: 8px;
+                width: 62px;
+                height: 46px;
+                border-width: 2px;
+                z-index: 2700;
+            }
+
+            .exam-main {
+                flex-direction: column;
+                overflow-y: visible;
+                height: auto;
+            }
+
+            .question-area {
+                margin: 8px;
+                padding: 16px;
+                flex: none;
+                border-radius: 10px;
+            }
+
+            .question-text {
+                font-size: 14.5px;
+                line-height: 1.5;
+                margin-bottom: 16px;
+            }
+
+            .option-btn {
+                padding: 11px 12px;
+                font-size: 13.5px;
+                gap: 10px;
+            }
+
+            .opt-letter {
+                width: 22px;
+                height: 22px;
+                font-size: 11.5px;
+            }
+
+            .action-buttons button {
+                padding: 10px 12px;
+                font-size: 12px;
+                flex: 1 1 45%;
+            }
+
+            .btn-submit {
+                margin-left: 0;
+                flex-basis: 100%;
+                margin-top: 4px;
+            }
+
+            .login-card {
+                padding: 26px 20px;
+                margin: 12px;
+            }
+
+            .login-card h1 {
+                font-size: 20px;
+            }
+
+            .modal-content {
+                padding: 22px 18px;
+                max-height: 85vh;
+                overflow-y: auto;
+            }
+
+            .result-summary {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+                padding: 12px;
+            }
+
+            .summary-val {
+                font-size: 15px;
+            }
+
+            .result-table th, .result-table td {
+                padding: 8px 6px;
+                font-size: 11.5px;
+            }
+
+            #warning-box {
+                top: 8px;
+                font-size: 12px;
+                padding: 10px 16px;
+                max-width: 90%;
+                text-align: center;
+            }
+
+            /* Floating Action Button */
+            .palette-fab {
+                display: flex;
+            }
+
+            /* Collapsible Bottom-Sheet Drawer */
+            .sidebar {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                max-height: 65vh;
+                overflow-y: auto;
+                border-radius: 16px 16px 0 0;
+                background: #ffffff;
+                z-index: 2600;
+                padding: 16px;
+                transform: translateY(100%);
+                transition: transform 0.25s ease-out;
+                box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.15);
+                border-left: none;
+                border-top: 1px solid var(--border-color);
+            }
+
+            .sidebar.open {
+                transform: translateY(0);
+            }
+
+            .close-drawer-btn {
+                display: block;
+                position: absolute;
+                top: 10px;
+                right: 14px;
+                font-size: 22px;
+                cursor: pointer;
+                color: #666;
+                background: none;
+                border: none;
+                line-height: 1;
+                padding: 4px 8px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            #video-preview {
+                width: 54px;
+                height: 40px;
+                top: 6px;
+                right: 6px;
+            }
+
+            .exam-header {
+                padding-right: 70px;
+            }
+
+            .palette-btn {
+                min-width: 32px;
+                width: 32px;
+                height: 32px;
+                font-size: 10.5px;
+            }
+
+            .option-btn {
+                font-size: 13px;
+                padding: 10px 10px;
+            }
+
+            .question-text {
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -822,6 +1039,7 @@
             
             <!-- Right: Question Palette Sidebar -->
             <div class="sidebar">
+                <button class="close-drawer-btn" onclick="closePaletteDrawer()" aria-label="Close Palette">✕</button>
                 <h3>Question Palette</h3>
                 <div class="palette-grid" id="palette-grid"></div>
                 
@@ -851,6 +1069,10 @@
                 </div>
             </div>
         </div>
+        <!-- Mobile Floating Action Button (FAB) for Question Palette -->
+        <button class="palette-fab" id="palette-fab" onclick="togglePaletteDrawer()" title="Question Palette">
+            ☰<span>Palette</span>
+        </button>
     </div>
 
     <!-- 4. CANCELLED SCREEN -->
@@ -900,7 +1122,7 @@
         // ==========================================
         const CLIENT_ID = '882267901678-4snpd33ks6kh2dif2vt2lf4vjea5059l.apps.googleusercontent.com';
         const DRIVE_FOLDER_ID = '1ngFjhaa0uO3TaxQ-8kXumzePMCT-laHQ';
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKV7C9xAgn5PGWP_23w7cqZ_fHBi5jmQSSiZ4C4Y_T_LUI7_BZndXeVX6gZ0peS7VLDg/exec';
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxptHyGlq7vsc3kPD4BMREfo5jzLBbLH6dKlf8hKasiKz0n2TdlTpRklapMuZgLte-UDQ/exec';
 
         // ==========================================
         // 2. STATE VARIABLES
@@ -1440,6 +1662,20 @@
             }
         }
 
+        
+        // ==========================================
+        // DRAWER CONTROLS (MOBILE)
+        // ==========================================
+        function togglePaletteDrawer() {
+            const sidebar = document.querySelector('.sidebar');
+            if (sidebar) sidebar.classList.toggle('open');
+        }
+
+        function closePaletteDrawer() {
+            const sidebar = document.querySelector('.sidebar');
+            if (sidebar) sidebar.classList.remove('open');
+        }
+
         function updatePalette() {
             const paletteGrid = document.getElementById('palette-grid');
             paletteGrid.innerHTML = '';
@@ -1467,6 +1703,9 @@
                 btn.onclick = () => {
                     currentQuestion = i;
                     loadQuestion();
+                    if (window.innerWidth <= 768) {
+                        closePaletteDrawer();
+                    }
                 };
 
                 paletteGrid.appendChild(btn);
