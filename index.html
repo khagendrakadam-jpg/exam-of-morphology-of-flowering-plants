@@ -1586,29 +1586,29 @@
             };
 
             try {
-                const response = await fetch(APPS_SCRIPT_URL, {
+                await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
+                    mode: 'no-cors',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(payload)
                 });
 
-                const responseData = await response.json();
-                if (!isTerminated) {
-                    if (responseData && responseData.result) {
-                        document.getElementById('exam-screen').classList.add('hidden');
-                        document.getElementById('result-screen').classList.remove('hidden');
-                        displayResultOnScreen(responseData.result);
-                    } else {
-                        throw new Error("Invalid response format from Apps Script");
-                    }
-                }
-            } catch (error) {
-                console.error("Backend scoring failed:", error);
                 if (!isTerminated) {
                     document.getElementById('exam-screen').innerHTML = `
                     <div style="display:flex; justify-content:center; align-items:center; height:100vh; flex-direction:column; gap:16px; padding:30px; text-align:center;">
                         <h2 style="color:var(--primary-green);">🌿 Exam Submitted Successfully!</h2>
-                        <p style="color:var(--text-dark); max-width:480px;">Your responses and proctoring video have been submitted. Result processing is currently finalizing on the institute server and will be sent to <strong>${studentEmail}</strong>.</p>
+                        <p style="color:var(--text-dark); max-width:480px;">Your responses and proctoring video have been submitted. Your detailed result with the answer key will be sent to <strong>${studentEmail}</strong> shortly.</p>
+                        <button class="btn-primary" style="max-width:200px;" onclick="window.location.reload()">Finish</button>
+                    </div>
+                `;
+                }
+            } catch (error) {
+                console.error("Backend submission failed:", error);
+                if (!isTerminated) {
+                    document.getElementById('exam-screen').innerHTML = `
+                    <div style="display:flex; justify-content:center; align-items:center; height:100vh; flex-direction:column; gap:16px; padding:30px; text-align:center;">
+                        <h2 style="color:var(--primary-green);">🌿 Exam Submitted Successfully!</h2>
+                        <p style="color:var(--text-dark); max-width:480px;">Your responses and proctoring video have been submitted. Your detailed result will be sent to <strong>${studentEmail}</strong>.</p>
                         <button class="btn-primary" style="max-width:200px;" onclick="window.location.reload()">Finish</button>
                     </div>
                 `;
